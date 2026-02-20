@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akila Prasanga — Mechanical Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Barlow:wght@300;400;600&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050608;
+    --dark: #0a0c10;
+    --panel: #0e1117;
+    --border: #1a2030;
+    --steel: #1e2d45;
+    --blue: #2563eb;
+    --blue-bright: #3b82f6;
+    --cyan: #06b6d4;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --dim: #334155;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--cyan);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    left: -100px; top: -100px;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid rgba(6,182,212,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    left: -100px; top: -100px;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s, width 0.2s, height 0.2s;
+  }
+
+  /* Grid overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(37,99,235,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,99,235,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 60px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(5,6,8,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 56px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 60px 180px;
+    overflow: hidden;
+  }
+
+  .hero-bg-circle {
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-bg-circle2 {
+    position: absolute;
+    left: 20%;
+    top: 10%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Rotating gear SVG background */
+  .gear-bg {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.04;
+    animation: spin 40s linear infinite;
+  }
+  @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--cyan);
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 9vw, 130px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-name .highlight {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(59,130,246,0.6);
+  }
+
+  .hero-headline {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(28px, 4vw, 52px);
+    line-height: 1.1;
+    letter-spacing: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--blue-bright);
+    margin-top: 14px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-top: 28px;
+    max-width: 480px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--blue);
+    color: #fff;
+    padding: 14px 32px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--cyan);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+    z-index: -1;
+  }
+  .btn-primary:hover { background: var(--cyan); color: var(--black); }
+
+  .btn-secondary {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid var(--dim);
+    color: var(--muted);
+    padding: 14px 32px;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* Stats bar */
+  .stats-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s forwards;
+  }
+
+  .stat {
+    padding: 28px 40px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--text);
+    letter-spacing: 2px;
+  }
+  .stat-num span { color: var(--cyan); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* SKILLS SECTION */
+  .section {
+    padding: 100px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 3px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Skills grid */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  /* Make last card (7th) span full row if alone */
+  .skill-card:last-child:nth-child(3n+1) {
+    grid-column: span 3;
+  }
+
+  .skill-card {
+    background: var(--panel);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 0;
+    background: var(--cyan);
+    transition: height 0.4s;
+  }
+  .skill-card:hover { background: var(--steel); }
+  .skill-card:hover::before { height: 100%; }
+
+  .skill-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .skill-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .skill-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue-bright);
+    border: 1px solid rgba(59,130,246,0.3);
+    padding: 4px 10px;
+  }
+
+  /* Featured project */
+  .project-section {
+    padding: 0 60px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .featured-project {
+    border: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .featured-project:hover { border-color: var(--blue); }
+
+  .project-visual {
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Animated blueprint lines */
+  .blueprint {
+    width: 80%;
+    height: 80%;
+    position: relative;
+  }
+  .blueprint svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .project-info {
+    padding: 60px;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .project-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 20px;
+  }
+
+  .project-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    letter-spacing: 2px;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .project-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+
+  .project-meta {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .meta-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .view-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue-bright);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: fit-content;
+    transition: gap 0.2s;
+  }
+  .view-link:hover { gap: 20px; }
+  .view-link::after {
+    content: '→';
+    font-size: 16px;
+  }
+
+  /* CTA section */
+  .cta-section {
+    padding: 80px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    letter-spacing: 3px;
+    color: var(--text);
+    line-height: 1;
+  }
+  .cta-title span { color: var(--blue-bright); }
+  .cta-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 12px;
+    font-weight: 300;
+  }
+  .cta-email {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+    display: block;
+  }
+  .cta-email:hover { border-color: var(--cyan); }
+
+  /* Footer */
+  footer {
+    padding: 24px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 24px;
+  }
+  .footer-socials a {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-socials a:hover { color: var(--cyan); }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes dash {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .line-draw {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: dash 3s ease forwards;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--blue); }
+
+  /* Status dot */
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.1s forwards;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .status-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #22c55e;
+  }
+
+  /* ========== MOBILE RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none !important; }
+
+    nav { padding: 16px 20px; }
+    .nav-links { gap: 20px; }
+    .nav-links a { font-size: 10px; letter-spacing: 1px; }
+
+    .hero { padding: 100px 24px 200px; }
+    .gear-bg { width: 300px; height: 300px; right: -60px; }
+
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stat { padding: 20px 24px; }
+    .stat:nth-child(2) { border-right: none; }
+
+    .section { padding: 60px 24px; }
+    .project-section { padding: 0 24px 60px; }
+
+    .skills-grid { grid-template-columns: 1fr; }
+    .skill-card:last-child:nth-child(3n+1) { grid-column: span 1; }
+    .skill-card { padding: 28px 24px; }
+
+    .featured-project { grid-template-columns: 1fr; }
+    .project-visual { min-height: 260px; }
+    .project-info {
+      padding: 32px 24px;
+      border-left: none;
+      border-top: 1px solid var(--border);
+    }
+    .project-meta { flex-wrap: wrap; gap: 20px; }
+
+    .cta-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+      padding: 60px 24px;
+    }
+    .cta-title { font-size: 48px; }
+    .cta-email { font-size: 20px; }
+
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px;
+    }
+
+    .hero-actions { flex-wrap: wrap; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .hero { padding: 90px 20px 220px; }
+    .section { padding: 48px 20px; }
+    .project-section { padding: 0 20px 48px; }
+    .cta-section { padding: 48px 20px; }
+    footer { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <ul class="nav-links">
+    <li><a href="#">About</a></li>
+    <li><a href="projects_file.html">Projects</a></li>
+    <li><a href="#">Research</a></li>
+    <li><a href="#">Case Studies</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle2"></div>
+
+  <!-- Rotating Gear -->
+  <svg class="gear-bg" width="600" height="600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="40" stroke="white" stroke-width="0.5"/>
+    <circle cx="50" cy="50" r="28" stroke="white" stroke-width="0.5"/>
+    <circle cx="50" cy="50" r="8" stroke="white" stroke-width="0.5"/>
+    <g stroke="white" stroke-width="0.5">
+      <line x1="50" y1="8" x2="50" y2="18"/>
+      <line x1="50" y1="82" x2="50" y2="92"/>
+      <line x1="8" y1="50" x2="18" y2="50"/>
+      <line x1="82" y1="50" x2="92" y2="50"/>
+      <line x1="19.7" y1="19.7" x2="26.8" y2="26.8"/>
+      <line x1="73.2" y1="73.2" x2="80.3" y2="80.3"/>
+      <line x1="80.3" y1="19.7" x2="73.2" y2="26.8"/>
+      <line x1="26.8" y1="73.2" x2="19.7" y2="80.3"/>
+    </g>
+    <!-- Gear teeth -->
+    <g stroke="white" stroke-width="1.5" stroke-linecap="round">
+      <line x1="50" y1="4" x2="50" y2="12"/>
+      <line x1="65.3" y1="7.3" x2="61.7" y2="14.5"/>
+      <line x1="77.6" y1="17" x2="72.1" y2="22.1"/>
+      <line x1="85.2" y1="30.7" x2="78.3" y2="34.3"/>
+      <line x1="88" y1="46" x2="80" y2="47"/>
+      <line x1="85.2" y1="61.3" x2="78.3" y2="57.7"/>
+      <line x1="77.6" y1="73" x2="72.1" y2="67.9"/>
+      <line x1="65.3" y1="82.7" x2="61.7" y2="75.5"/>
+      <line x1="50" y1="88" x2="50" y2="96"/>
+      <line x1="34.7" y1="82.7" x2="38.3" y2="75.5"/>
+      <line x1="22.4" y1="73" x2="27.9" y2="67.9"/>
+      <line x1="14.8" y1="61.3" x2="21.7" y2="57.7"/>
+      <line x1="12" y1="46" x2="20" y2="47"/>
+      <line x1="14.8" y1="30.7" x2="21.7" y2="34.3"/>
+      <line x1="22.4" y1="17" x2="27.9" y2="22.1"/>
+      <line x1="34.7" y1="7.3" x2="38.3" y2="14.5"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-tag">Mechanical Engineer</div>
+    <h1 class="hero-name">AKILA<br><span class="highlight">PRASANGA</span></h1>
+    <div class="hero-headline">Mechanical Engineer <span style="color:var(--cyan);font-weight:400;">(UG)</span></div>
+    <p class="hero-desc">Specializing in 3D design, simulation, FEA, CAD/CAM, IoT integration, and Industry 4.0 systems. Turning complex engineering challenges into precise, manufacturable solutions.</p>
+
+    <div class="status">
+      <div class="dot"></div>
+      <span class="status-text">Available for projects</span>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#" class="btn-secondary">Download CV</a>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Year Experience</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">30<span>+</span></div>
+      <div class="stat-label">Projects Completed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Core Disciplines</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100<span>%</span></div>
+      <div class="stat-label">Precision Focused</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Expertise</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill-card">
+      <span class="skill-icon">⬡</span>
+      <div class="skill-name">3D Design & CAD</div>
+      <p class="skill-desc">Precision modeling of complex parts and assemblies. From concept sketches to production-ready geometry.</p>
+      <div class="skill-tags">
+        <span class="tag">SolidWorks</span>
+        <span class="tag">Fusion 360</span>
+        <span class="tag">Assemblies</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <span class="skill-icon">◈</span>
+      <div class="skill-name">CAM & Manufacturing</div>
+      <p class="skill-desc">Toolpath generation, machining setup, and bridging the gap between design and physical production.</p>
+      <div class="skill-tags">
+        <span class="tag">CAM</span>
+        <span class="tag">CNC</span>
+        <span class="tag">Toolpaths</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <span class="skill-icon">◎</span>
+      <div class="skill-name">Simulation & FEA</div>
+      <p class="skill-desc">Structural, thermal, and modal analysis to validate designs before a single part is manufactured.</p>
+      <div class="skill-tags">
+        <span class="tag">FEA</span>
+        <span class="tag">Stress Analysis</span>
+        <span class="tag">Thermal</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <span class="skill-icon">⬢</span>
+      <div class="skill-name">IoT Integration</div>
+      <p class="skill-desc">Connecting mechanical systems with sensors, microcontrollers, and real-time data platforms.</p>
+      <div class="skill-tags">
+        <span class="tag">IoT</span>
+        <span class="tag">Sensors</span>
+        <span class="tag">Embedded</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <span class="skill-icon">⬡</span>
+      <div class="skill-name">Industry 4.0</div>
+      <p class="skill-desc">Smart manufacturing, digital twins, automation and connected factory systems for modern production.</p>
+      <div class="skill-tags">
+        <span class="tag">Digital Twin</span>
+        <span class="tag">Automation</span>
+        <span class="tag">Smart Mfg</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <span class="skill-icon">◉</span>
+      <div class="skill-name">Product Development</div>
+      <p class="skill-desc">Full lifecycle engineering from ideation and prototyping through to validated, manufacturable product design.</p>
+      <div class="skill-tags">
+        <span class="tag">Prototyping</span>
+        <span class="tag">DFM</span>
+        <span class="tag">Optimization</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <span class="skill-icon">⟳</span>
+      <div class="skill-name">Robotics</div>
+      <p class="skill-desc">Mechanical design of robotic systems, kinematics, actuator selection, and integration with control electronics for autonomous and semi-autonomous applications.</p>
+      <div class="skill-tags">
+        <span class="tag">Kinematics</span>
+        <span class="tag">Actuators</span>
+        <span class="tag">Mechanisms</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PROJECT -->
+<section class="project-section">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Featured Project</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="featured-project">
+    <div class="project-visual">
+      <div class="blueprint">
+        <svg viewBox="0 0 300 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Blueprint style technical drawing -->
+          <rect x="10" y="10" width="280" height="230" stroke="rgba(37,99,235,0.15)" stroke-width="1"/>
+          <!-- Main part outline -->
+          <rect class="line-draw" x="60" y="50" width="180" height="120" stroke="#2563eb" stroke-width="1.5" fill="none"/>
+          <!-- Center hole -->
+          <circle class="line-draw" cx="150" cy="110" r="30" stroke="#06b6d4" stroke-width="1" fill="none" style="animation-delay:0.5s"/>
+          <!-- Bolt holes -->
+          <circle class="line-draw" cx="90" cy="80" r="8" stroke="#3b82f6" stroke-width="0.8" fill="none" style="animation-delay:1s"/>
+          <circle class="line-draw" cx="210" cy="80" r="8" stroke="#3b82f6" stroke-width="0.8" fill="none" style="animation-delay:1.1s"/>
+          <circle class="line-draw" cx="90" cy="140" r="8" stroke="#3b82f6" stroke-width="0.8" fill="none" style="animation-delay:1.2s"/>
+          <circle class="line-draw" cx="210" cy="140" r="8" stroke="#3b82f6" stroke-width="0.8" fill="none" style="animation-delay:1.3s"/>
+          <!-- Dimension lines -->
+          <line class="line-draw" x1="60" y1="185" x2="240" y2="185" stroke="rgba(100,116,139,0.5)" stroke-width="0.5" style="animation-delay:1.5s"/>
+          <line class="line-draw" x1="60" y1="180" x2="60" y2="190" stroke="rgba(100,116,139,0.5)" stroke-width="0.5" style="animation-delay:1.5s"/>
+          <line class="line-draw" x1="240" y1="180" x2="240" y2="190" stroke="rgba(100,116,139,0.5)" stroke-width="0.5" style="animation-delay:1.5s"/>
+          <text x="150" y="200" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(100,116,139,0.7)">180.00 mm</text>
+          <!-- Side dimension -->
+          <line class="line-draw" x1="255" y1="50" x2="255" y2="170" stroke="rgba(100,116,139,0.5)" stroke-width="0.5" style="animation-delay:1.6s"/>
+          <text x="268" y="115" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(100,116,139,0.7)" transform="rotate(90, 268, 115)">120.00</text>
+          <!-- Centerlines -->
+          <line x1="150" y1="50" x2="150" y2="170" stroke="rgba(6,182,212,0.2)" stroke-width="0.5" stroke-dasharray="5,5"/>
+          <line x1="60" y1="110" x2="240" y2="110" stroke="rgba(6,182,212,0.2)" stroke-width="0.5" stroke-dasharray="5,5"/>
+          <!-- Corner marks -->
+          <path d="M60,60 L60,50 L70,50" stroke="rgba(59,130,246,0.4)" stroke-width="0.5" fill="none"/>
+          <path d="M230,60 L240,60 L240,50" stroke="rgba(59,130,246,0.4)" stroke-width="0.5" fill="none"/>
+          <!-- Title block -->
+          <rect x="10" y="215" width="280" height="25" stroke="rgba(37,99,235,0.2)" stroke-width="0.5" fill="rgba(14,17,23,0.5)"/>
+          <text x="20" y="231" font-family="DM Mono" font-size="7" fill="rgba(100,116,139,0.6)">DWG NO: AP-2024-001 | SCALE: 1:2 | MATERIAL: AL6061-T6</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="project-info">
+      <div class="project-label">Case Study — FEA + CAD</div>
+      <div class="project-title">Lightweight Bracket Redesign</div>
+      <p class="project-desc">Redesigned a structural mounting bracket using topology optimization in SolidWorks. FEA validated a 34% weight reduction while maintaining a safety factor above 3.0, leading to production approval within 2 weeks.</p>
+
+      <div class="project-meta">
+        <div class="meta-item">
+          <span class="meta-label">Tool</span>
+          <span class="meta-value">SolidWorks</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Weight Saved</span>
+          <span class="meta-value">34%</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Safety Factor</span>
+          <span class="meta-value">&gt; 3.0</span>
+        </div>
+      </div>
+
+      <a href="#" class="view-link">View Case Study</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div>
+    <div class="cta-title">Let's Build<br><span>Something</span><br>Precise.</div>
+    <p class="cta-sub">Available for freelance, consulting & full-time roles.</p>
+  </div>
+  <div>
+    <a href="/cdn-cgi/l/email-protection#b9d8d2d0d5d8c9cbd8cad8d7ded88bf9ded4d8d0d597dad6d4" class="cta-email"><span class="__cf_email__" data-cfemail="385953515459484a594b59565f590a785f55595154165b5755">[email&#160;protected]</span></a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 Akila Prasanga — All rights reserved</div>
+  <div class="footer-email">
+    <a href="/cdn-cgi/l/email-protection#bedfd5d7d2dfceccdfcddfd0d9df8cfed9d3dfd7d290ddd1d3" class="cta-email"><span class="__cf_email__" data-cfemail="e4858f8d888594968597858a8385d6a48389858d88ca878b89">[email&#160;protected]</span></a>
+  </div>
+  <div class="footer-socials">
+    <a href="#">LinkedIn</a>
+    <a href="#">GitHub</a>
+    <a href="#">Behance</a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Custom cursor - desktop only
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  const isDesktop = window.matchMedia('(pointer: fine)').matches;
+
+  if (isDesktop) {
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width = '50px';
+        ring.style.height = '50px';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '32px';
+        ring.style.height = '32px';
+      });
+    });
+  } else {
+    cursor.style.display = 'none';
+    ring.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.skill-card, .featured-project, .section-header').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
